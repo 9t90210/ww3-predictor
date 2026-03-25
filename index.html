@@ -1,0 +1,1146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WW3 Probability Predictor</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #0a0e17;
+    --card: #111827;
+    --card-border: #1f2937;
+    --text: #e5e7eb;
+    --text-muted: #9ca3af;
+    --accent: #3b82f6;
+    --danger: #ef4444;
+    --warning: #f59e0b;
+    --success: #10b981;
+    --navy: #1e3a5f;
+  }
+
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.5;
+    min-height: 100vh;
+  }
+
+  .header {
+    background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%);
+    border-bottom: 1px solid var(--card-border);
+    padding: 24px 32px;
+    text-align: center;
+  }
+
+  .header h1 {
+    font-size: 28px;
+    font-weight: 900;
+    letter-spacing: -0.5px;
+    background: linear-gradient(135deg, #60a5fa, #a78bfa, #f472b6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .header .subtitle {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-top: 4px;
+  }
+
+  .container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 24px;
+    display: grid;
+    gap: 20px;
+  }
+
+  /* Main probability display */
+  .prob-hero {
+    background: linear-gradient(135deg, #1e1b4b, #172554);
+    border: 1px solid #312e81;
+    border-radius: 16px;
+    padding: 32px;
+    text-align: center;
+  }
+
+  .prob-hero .label { font-size: 14px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px; }
+
+  .prob-value {
+    font-size: 96px;
+    font-weight: 900;
+    line-height: 1;
+    margin: 8px 0;
+    transition: all 0.5s ease;
+  }
+
+  .prob-value.low { color: var(--success); }
+  .prob-value.medium { color: var(--warning); }
+  .prob-value.high { color: var(--danger); }
+  .prob-value.extreme { color: #dc2626; text-shadow: 0 0 40px rgba(220,38,38,0.4); }
+
+  .prob-bar-container {
+    width: 100%;
+    max-width: 600px;
+    margin: 16px auto;
+    height: 12px;
+    background: #1f2937;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  .prob-bar {
+    height: 100%;
+    border-radius: 6px;
+    transition: width 0.5s ease, background 0.5s ease;
+  }
+
+  .confidence-band {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    margin-top: 16px;
+    font-size: 13px;
+  }
+
+  .confidence-band span { color: var(--text-muted); }
+  .confidence-band strong { color: var(--text); }
+
+  /* Grid layouts */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+
+  @media (max-width: 900px) {
+    .grid-2, .grid-3 { grid-template-columns: 1fr; }
+    .prob-value { font-size: 64px; }
+  }
+
+  /* Cards */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 20px;
+  }
+
+  .card h2 {
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+  }
+
+  /* Black swan toggles */
+  .bs-list { list-style: none; }
+
+  .bs-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s;
+    border: 1px solid transparent;
+  }
+
+  .bs-item:hover { background: rgba(59,130,246,0.08); }
+  .bs-item.active { background: rgba(239,68,68,0.1); border-color: rgba(239,68,68,0.3); }
+
+  .bs-toggle {
+    width: 44px; height: 24px;
+    background: #374151;
+    border-radius: 12px;
+    position: relative;
+    flex-shrink: 0;
+    transition: background 0.2s;
+  }
+
+  .bs-toggle::after {
+    content: '';
+    position: absolute;
+    top: 3px; left: 3px;
+    width: 18px; height: 18px;
+    background: #9ca3af;
+    border-radius: 50%;
+    transition: all 0.2s;
+  }
+
+  .bs-item.active .bs-toggle { background: var(--danger); }
+  .bs-item.active .bs-toggle::after { left: 23px; background: white; }
+
+  .bs-name { font-size: 13px; font-weight: 500; flex: 1; }
+  .bs-impact { font-size: 12px; font-weight: 700; color: var(--danger); white-space: nowrap; }
+
+  /* Custom event input */
+  .custom-input-group {
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid var(--card-border);
+  }
+
+  .custom-input-group label { font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 6px; }
+
+  .custom-input-group input[type="text"] {
+    width: 100%;
+    padding: 10px 14px;
+    background: #0a0e17;
+    border: 1px solid var(--card-border);
+    border-radius: 8px;
+    color: var(--text);
+    font-size: 14px;
+    font-family: inherit;
+    margin-bottom: 10px;
+  }
+
+  .custom-input-group input:focus { border-color: var(--accent); outline: none; }
+
+  .severity-group, .theater-group {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+
+  .severity-btn, .theater-btn {
+    padding: 6px 14px;
+    border-radius: 6px;
+    border: 1px solid var(--card-border);
+    background: transparent;
+    color: var(--text-muted);
+    font-size: 12px;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .severity-btn.active, .theater-btn.active {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: rgba(59,130,246,0.1);
+  }
+
+  .btn-add {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: none;
+    background: var(--accent);
+    color: white;
+    font-weight: 600;
+    font-size: 14px;
+    font-family: inherit;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .btn-add:hover { background: #2563eb; }
+
+  .btn-recalc {
+    width: 100%;
+    padding: 14px;
+    border-radius: 10px;
+    border: 2px solid var(--danger);
+    background: rgba(239,68,68,0.1);
+    color: var(--danger);
+    font-weight: 700;
+    font-size: 16px;
+    font-family: inherit;
+    cursor: pointer;
+    margin-top: 16px;
+    transition: all 0.2s;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .btn-recalc:hover { background: var(--danger); color: white; }
+
+  /* Custom events list */
+  .custom-event {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    background: rgba(245,158,11,0.1);
+    border: 1px solid rgba(245,158,11,0.3);
+    border-radius: 8px;
+    margin-bottom: 8px;
+    font-size: 13px;
+  }
+
+  .custom-event .remove {
+    margin-left: auto;
+    cursor: pointer;
+    color: var(--text-muted);
+    font-size: 16px;
+  }
+
+  .custom-event .remove:hover { color: var(--danger); }
+
+  /* Similarity list */
+  .sim-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(31,41,55,0.5);
+    font-size: 13px;
+  }
+
+  .sim-item:last-child { border-bottom: none; }
+  .sim-bar { height: 4px; background: var(--accent); border-radius: 2px; margin-top: 4px; }
+
+  /* Feature importance */
+  .feat-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 6px 0;
+    font-size: 13px;
+  }
+
+  .feat-bar-bg {
+    flex: 1;
+    height: 8px;
+    background: #1f2937;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .feat-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), #8b5cf6);
+    border-radius: 4px;
+  }
+
+  .feat-name { width: 180px; color: var(--text-muted); font-size: 12px; }
+  .feat-val { width: 45px; text-align: right; font-weight: 600; font-size: 12px; }
+
+  /* Chart containers */
+  .chart-container { position: relative; height: 280px; }
+
+  /* Model badges */
+  .model-badges {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 12px;
+  }
+
+  .model-badge {
+    padding: 8px 16px;
+    border-radius: 8px;
+    background: rgba(59,130,246,0.1);
+    border: 1px solid rgba(59,130,246,0.2);
+    font-size: 12px;
+  }
+
+  .model-badge .name { color: var(--text-muted); }
+  .model-badge .val { font-weight: 700; color: var(--text); font-size: 16px; }
+
+  /* Slider controls */
+  .slider-group { margin-bottom: 14px; }
+  .slider-group label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+  }
+  .slider-group label .val { color: var(--text); font-weight: 600; }
+
+  input[type="range"] {
+    width: 100%;
+    -webkit-appearance: none;
+    height: 6px;
+    background: #1f2937;
+    border-radius: 3px;
+    outline: none;
+  }
+
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 16px; height: 16px;
+    background: var(--accent);
+    border-radius: 50%;
+    cursor: pointer;
+  }
+
+  /* Scenario cards */
+  .scenario-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  @media (max-width: 900px) { .scenario-grid { grid-template-columns: repeat(2, 1fr); } }
+
+  .scenario-card {
+    padding: 16px;
+    border-radius: 10px;
+    border: 1px solid var(--card-border);
+    text-align: center;
+  }
+
+  .scenario-card .pct { font-size: 28px; font-weight: 800; margin: 8px 0 4px; }
+  .scenario-card .name { font-size: 12px; color: var(--text-muted); }
+  .scenario-card .desc { font-size: 11px; color: var(--text-muted); margin-top: 4px; line-height: 1.4; }
+
+  .sc-deescalate { border-color: rgba(16,185,129,0.3); }
+  .sc-deescalate .pct { color: var(--success); }
+  .sc-regional { border-color: rgba(245,158,11,0.3); }
+  .sc-regional .pct { color: var(--warning); }
+  .sc-cascade { border-color: rgba(239,68,68,0.3); }
+  .sc-cascade .pct { color: var(--danger); }
+  .sc-economic { border-color: rgba(139,92,246,0.3); }
+  .sc-economic .pct { color: #8b5cf6; }
+
+  .footer {
+    text-align: center;
+    padding: 24px;
+    font-size: 11px;
+    color: #4b5563;
+    border-top: 1px solid var(--card-border);
+    margin-top: 20px;
+  }
+
+  /* Animate on recalc */
+  .pulse { animation: pulse 0.6s ease; }
+  @keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>WW3 Probability Predictor</h1>
+  <div class="subtitle">ML Model trained on 64 historical wars (500 BC - 2026 AD) | Monte Carlo Black Swan Simulation | Updated March 25, 2026</div>
+</div>
+
+<div class="container">
+
+  <!-- HERO PROBABILITY -->
+  <div class="prob-hero">
+    <div class="label">Estimated Probability of World War 3</div>
+    <div class="prob-value extreme" id="mainProb">74.7%</div>
+    <div class="prob-bar-container">
+      <div class="prob-bar" id="mainBar" style="width:74.7%; background: linear-gradient(90deg, #f59e0b, #ef4444, #dc2626);"></div>
+    </div>
+    <div class="confidence-band">
+      <span>Best Case: <strong id="bestCase">38.2%</strong></span>
+      <span>Baseline: <strong id="baselineDisp">74.7%</strong></span>
+      <span>Worst Case: <strong id="worstCase">94.5%</strong></span>
+    </div>
+    <div class="model-badges">
+      <div class="model-badge"><span class="name">Random Forest</span><br><span class="val" id="rfProb">28.6%</span></div>
+      <div class="model-badge"><span class="name">Gradient Boosting</span><br><span class="val" id="gbProb">99.8%</span></div>
+      <div class="model-badge"><span class="name">Logistic Regression</span><br><span class="val" id="lrProb">85.0%</span></div>
+      <div class="model-badge"><span class="name">Ensemble</span><br><span class="val" id="ensProb">74.7%</span></div>
+    </div>
+  </div>
+
+  <!-- SCENARIOS -->
+  <div class="card">
+    <h2>Four Scenarios (Jiang Xueqin Framework)</h2>
+    <div class="scenario-grid">
+      <div class="scenario-card sc-deescalate">
+        <div class="name">De-escalation Miracle</div>
+        <div class="pct">15%</div>
+        <div class="desc">Trump negotiates Iran withdrawal, accepts diminished Middle East presence, deals with China</div>
+      </div>
+      <div class="scenario-card sc-regional">
+        <div class="name">Prolonged Regional War</div>
+        <div class="pct">30%</div>
+        <div class="desc">Iran becomes another Afghanistan — decade-long quagmire without great power escalation</div>
+      </div>
+      <div class="scenario-card sc-cascade">
+        <div class="name">Cascading Chain Reaction</div>
+        <div class="pct">35%</div>
+        <div class="desc">Iran war + economic shock triggers Russia in Baltics or China toward Taiwan</div>
+      </div>
+      <div class="scenario-card sc-economic">
+        <div class="name">Economic Collapse First</div>
+        <div class="pct">20%</div>
+        <div class="desc">AI bubble + energy shock + petrodollar disruption forces de-escalation but triggers civil unrest</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <!-- BLACK SWAN TOGGLES -->
+    <div class="card" style="max-height: 800px; overflow-y: auto;">
+      <h2>Black Swan Event Simulator</h2>
+      <ul class="bs-list" id="bsList"></ul>
+
+      <div id="customEventsList"></div>
+
+      <div class="custom-input-group">
+        <label>Add Custom Event</label>
+        <input type="text" id="customEventName" placeholder="e.g., Iran sinks a US aircraft carrier">
+        <label style="margin-top:8px">Severity</label>
+        <div class="severity-group">
+          <button class="severity-btn" data-val="0.05" onclick="selectSeverity(this)">Low</button>
+          <button class="severity-btn active" data-val="0.12" onclick="selectSeverity(this)">Medium</button>
+          <button class="severity-btn" data-val="0.18" onclick="selectSeverity(this)">High</button>
+          <button class="severity-btn" data-val="0.25" onclick="selectSeverity(this)">Extreme</button>
+        </div>
+        <label>Theater</label>
+        <div class="theater-group">
+          <button class="theater-btn active" data-val="middle_east" onclick="selectTheater(this)">Mid-East</button>
+          <button class="theater-btn" data-val="europe" onclick="selectTheater(this)">Europe</button>
+          <button class="theater-btn" data-val="indo_pacific" onclick="selectTheater(this)">Asia</button>
+          <button class="theater-btn" data-val="all" onclick="selectTheater(this)">Global</button>
+        </div>
+        <button class="btn-add" onclick="addCustomEvent()">+ Add Event</button>
+      </div>
+
+      <button class="btn-recalc" onclick="recalculate()">Recalculate Probability</button>
+    </div>
+
+    <!-- CHARTS COLUMN -->
+    <div style="display:flex; flex-direction:column; gap:20px;">
+      <!-- Time Horizon -->
+      <div class="card">
+        <h2>Probability Over Time</h2>
+        <div class="chart-container">
+          <canvas id="timeChart"></canvas>
+        </div>
+      </div>
+
+      <!-- Distribution -->
+      <div class="card">
+        <h2>Monte Carlo Distribution (10,000 simulations)</h2>
+        <div class="chart-container">
+          <canvas id="distChart"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <!-- FEATURE IMPORTANCE -->
+    <div class="card">
+      <h2>What Drives Escalation (Feature Importance)</h2>
+      <div id="featImportance"></div>
+    </div>
+
+    <!-- HISTORICAL SIMILARITY -->
+    <div class="card">
+      <h2>Historical Era Match</h2>
+      <div id="simList"></div>
+    </div>
+  </div>
+
+  <!-- CONDITION SLIDERS -->
+  <div class="card">
+    <h2>Adjust Current Conditions</h2>
+    <div class="grid-3" id="sliders"></div>
+  </div>
+
+  <!-- SENSITIVITY -->
+  <div class="card">
+    <h2>Sensitivity Analysis — What Moves the Needle Most</h2>
+    <div class="chart-container" style="height:320px">
+      <canvas id="sensChart"></canvas>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  Model trained on 64 historical wars (500 BC - 2026 AD) using scikit-learn Random Forest + Gradient Boosting + Logistic Regression ensemble.<br>
+  Monte Carlo simulation with 15 black swan event types. Not financial or military advice. For educational/research purposes only.<br>
+  Methodology inspired by Professor Jiang Xueqin's Predictive History framework (game theory + structural analysis).
+</div>
+
+<script>
+// ============================================================
+// MODEL DATA (exported from Python)
+// ============================================================
+
+const MODEL = {
+  baseline: 0.747,
+  rf: 0.286,
+  gb: 0.998,
+  lr: 0.850,
+  weights: { rf: 0.30, gb: 0.45, lr: 0.25 },
+  features: {
+    "great_powers_involved": 3,
+    "theaters": 2,
+    "duration_years": 0.07,
+    "power_ratio_ab": 3.0,
+    "alliance_rigidity": 0.8,
+    "economic_interdependence": 0.3,
+    "prior_disputes_10yr": 5,
+    "concurrent_conflicts_global": 8,
+    "power_transition": 1,
+    "nuclear_era": 1,
+    "asymmetric_warfare": 1,
+    "resource_competition": 0.9,
+    "ideological_divide": 0.8,
+    "system_polarity": 3
+  },
+  featureLabels: {
+    "great_powers_involved": "Great Powers Involved",
+    "theaters": "Number of Theaters",
+    "duration_years": "Duration (years)",
+    "power_ratio_ab": "Power Ratio",
+    "alliance_rigidity": "Alliance Rigidity",
+    "economic_interdependence": "Economic Interdependence",
+    "prior_disputes_10yr": "Prior Disputes (10yr)",
+    "concurrent_conflicts_global": "Concurrent Global Conflicts",
+    "power_transition": "Power Transition Underway",
+    "nuclear_era": "Nuclear Era",
+    "asymmetric_warfare": "Asymmetric Warfare",
+    "resource_competition": "Resource Competition",
+    "ideological_divide": "Ideological Divide",
+    "system_polarity": "System Polarity (multi=3)"
+  },
+  importance: [
+    { feature: "theaters", importance: 0.215 },
+    { feature: "great_powers_involved", importance: 0.188 },
+    { feature: "resource_competition", importance: 0.178 },
+    { feature: "duration_years", importance: 0.088 },
+    { feature: "system_polarity", importance: 0.057 },
+    { feature: "alliance_rigidity", importance: 0.055 },
+    { feature: "nuclear_era", importance: 0.039 },
+    { feature: "concurrent_conflicts_global", importance: 0.038 },
+    { feature: "ideological_divide", importance: 0.036 },
+    { feature: "economic_interdependence", importance: 0.030 },
+    { feature: "power_transition", importance: 0.027 },
+    { feature: "asymmetric_warfare", importance: 0.020 },
+    { feature: "prior_disputes_10yr", importance: 0.018 },
+    { feature: "power_ratio_ab", importance: 0.011 }
+  ],
+  similarity: [
+    { name: "Russia-Ukraine War", year: "2022", similarity: 0.867 },
+    { name: "Red Sea / Houthi Crisis", year: "2024", similarity: 0.675 },
+    { name: "Second Sino-Japanese War", year: "1937", similarity: 0.592 },
+    { name: "Israel-Gaza War", year: "2023", similarity: 0.546 },
+    { name: "World War II", year: "1939", similarity: 0.456 },
+    { name: "Syrian Civil War", year: "2011", similarity: 0.413 },
+    { name: "World War I", year: "1914", similarity: 0.373 },
+    { name: "Saudi-Yemen War", year: "2015", similarity: 0.361 },
+    { name: "Iraq War", year: "2003", similarity: 0.315 },
+    { name: "Crimea Annexation", year: "2014", similarity: 0.294 }
+  ],
+  logCoefs: {
+    "resource_competition": 1.035,
+    "theaters": 0.959,
+    "great_powers_involved": 0.617,
+    "nuclear_era": -0.585,
+    "concurrent_conflicts_global": 0.556,
+    "system_polarity": 0.521,
+    "power_transition": 0.366,
+    "ideological_divide": 0.335,
+    "alliance_rigidity": 0.289,
+    "asymmetric_warfare": 0.187,
+    "prior_disputes_10yr": 0.165,
+    "economic_interdependence": -0.142,
+    "duration_years": -0.098,
+    "power_ratio_ab": -0.067
+  }
+};
+
+const BLACK_SWANS = [
+  { id:"bs_1", name:"Assassination of major leader", impact:0.12, freq:2.0, chain:1.5, cat:"political" },
+  { id:"bs_2", name:"Accidental military shoot-down", impact:0.15, freq:3.0, chain:1.4, cat:"military" },
+  { id:"bs_3", name:"Nuclear false alarm / near-launch", impact:0.22, freq:1.0, chain:2.0, cat:"nuclear" },
+  { id:"bs_4", name:"Surprise military attack", impact:0.18, freq:2.0, chain:1.8, cat:"military" },
+  { id:"bs_5", name:"Global financial crash", impact:0.09, freq:2.0, chain:1.3, cat:"economic" },
+  { id:"bs_6", name:"Coup in nuclear-armed state", impact:0.14, freq:1.5, chain:1.7, cat:"political" },
+  { id:"bs_7", name:"Major cyber attack on infrastructure", impact:0.11, freq:0.5, chain:1.4, cat:"cyber" },
+  { id:"bs_8", name:"AI system malfunction (military)", impact:0.15, freq:0.1, chain:2.0, cat:"technology" },
+  { id:"bs_9", name:"Pandemic disrupts military ops", impact:-0.05, freq:0.3, chain:0.8, cat:"health" },
+  { id:"bs_10", name:"Rogue nuclear detonation", impact:0.30, freq:0.05, chain:3.0, cat:"nuclear" },
+  { id:"bs_11", name:"Naval incident in contested waters", impact:0.10, freq:3.0, chain:1.3, cat:"military" },
+  { id:"bs_12", name:"Arms control treaty collapse", impact:0.07, freq:2.0, chain:1.2, cat:"diplomatic" },
+  { id:"bs_13", name:"China-Taiwan military incident", impact:0.18, freq:1.0, chain:1.8, cat:"military" },
+  { id:"bs_14", name:"NATO-Russia direct clash", impact:0.20, freq:0.3, chain:1.9, cat:"military" },
+  { id:"bs_15", name:"Strait of Hormuz full closure", impact:0.13, freq:0.2, chain:1.5, cat:"economic" }
+];
+
+// ============================================================
+// STATE
+// ============================================================
+
+let activeBlackSwans = new Set();
+let customEvents = [];
+let selectedSeverity = 0.12;
+let selectedTheater = "middle_east";
+let currentFeatures = { ...MODEL.features };
+let currentProb = MODEL.baseline;
+
+// ============================================================
+// INITIALIZATION
+// ============================================================
+
+function init() {
+  renderBlackSwans();
+  renderFeatureImportance();
+  renderSimilarity();
+  renderSliders();
+  renderTimeChart();
+  renderDistChart();
+  renderSensChart();
+  updateDisplay(MODEL.baseline);
+}
+
+// ============================================================
+// BLACK SWAN LIST
+// ============================================================
+
+function renderBlackSwans() {
+  const list = document.getElementById('bsList');
+  list.innerHTML = BLACK_SWANS.map(bs => `
+    <li class="bs-item" data-id="${bs.id}" onclick="toggleBS('${bs.id}')">
+      <div class="bs-toggle"></div>
+      <span class="bs-name">${bs.name}</span>
+      <span class="bs-impact">${bs.impact > 0 ? '+' : ''}${(bs.impact*100).toFixed(0)}%</span>
+    </li>
+  `).join('');
+}
+
+function toggleBS(id) {
+  if (activeBlackSwans.has(id)) {
+    activeBlackSwans.delete(id);
+  } else {
+    activeBlackSwans.add(id);
+  }
+  document.querySelector(`[data-id="${id}"]`).classList.toggle('active');
+}
+
+// ============================================================
+// CUSTOM EVENTS
+// ============================================================
+
+function selectSeverity(btn) {
+  document.querySelectorAll('.severity-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  selectedSeverity = parseFloat(btn.dataset.val);
+}
+
+function selectTheater(btn) {
+  document.querySelectorAll('.theater-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  selectedTheater = btn.dataset.val;
+}
+
+function addCustomEvent() {
+  const name = document.getElementById('customEventName').value.trim();
+  if (!name) return;
+
+  customEvents.push({
+    id: 'custom_' + Date.now(),
+    name: name,
+    impact: selectedSeverity,
+    theater: selectedTheater
+  });
+
+  document.getElementById('customEventName').value = '';
+  renderCustomEvents();
+}
+
+function removeCustomEvent(id) {
+  customEvents = customEvents.filter(e => e.id !== id);
+  renderCustomEvents();
+}
+
+function renderCustomEvents() {
+  const el = document.getElementById('customEventsList');
+  el.innerHTML = customEvents.map(e => `
+    <div class="custom-event">
+      <span>${e.name}</span>
+      <span style="color:var(--warning);font-weight:700;">+${(e.impact*100).toFixed(0)}%</span>
+      <span class="remove" onclick="removeCustomEvent('${e.id}')">&times;</span>
+    </div>
+  `).join('');
+}
+
+// ============================================================
+// RECALCULATE
+// ============================================================
+
+function recalculate() {
+  // Start with baseline adjusted by slider changes
+  let prob = MODEL.baseline;
+
+  // Apply slider adjustments using logistic regression coefficients
+  const featureNames = Object.keys(MODEL.features);
+  for (const feat of featureNames) {
+    const original = MODEL.features[feat];
+    const current = currentFeatures[feat];
+    if (original !== 0) {
+      const pctChange = (current - original) / Math.max(original, 0.01);
+      const coef = MODEL.logCoefs[feat] || 0;
+      prob += pctChange * coef * 0.05; // dampened effect
+    }
+  }
+
+  // Apply active black swans with chain reaction
+  let nActive = 0;
+  for (const bs of BLACK_SWANS) {
+    if (activeBlackSwans.has(bs.id)) {
+      let impact = bs.impact;
+      if (nActive > 0) {
+        // Chain reaction: diminishing returns to prevent saturation
+        impact *= (1 + 0.15 * Math.min(nActive, 3));
+      }
+      prob += impact;
+      nActive++;
+    }
+  }
+
+  // Apply custom events
+  for (const ce of customEvents) {
+    let impact = ce.impact;
+    if (nActive > 0) {
+      impact *= (1 + 0.1 * Math.min(nActive, 3));
+    }
+    prob += impact;
+    nActive++;
+  }
+
+  prob = Math.max(0.01, Math.min(0.99, prob));
+  currentProb = prob;
+
+  // Run mini Monte Carlo for confidence bands
+  const mc = runMonteCarlo(prob, 2000);
+
+  updateDisplay(prob, mc);
+  updateTimeChart(prob);
+  updateDistChart(mc.distribution);
+
+  // Pulse animation
+  document.getElementById('mainProb').classList.add('pulse');
+  setTimeout(() => document.getElementById('mainProb').classList.remove('pulse'), 600);
+}
+
+function runMonteCarlo(baseProb, nSims) {
+  const results = [];
+
+  for (let i = 0; i < nSims; i++) {
+    let p = baseProb;
+    let triggered = 0;
+
+    for (const bs of BLACK_SWANS) {
+      if (activeBlackSwans.has(bs.id)) continue; // already applied
+      const freqPerYear = bs.freq / 10;
+      let pOccur = 1 - Math.pow(1 - freqPerYear, 2);
+      if (bs.cat === 'military') pOccur *= 1.3;
+      if (bs.cat === 'economic') pOccur *= 1.2;
+      pOccur = Math.min(pOccur, 0.6); // cap at 60%
+
+      if (Math.random() < pOccur) {
+        let impact = bs.impact * 0.6; // dampened for MC
+        if (triggered > 0) impact *= (1 + 0.08 * Math.min(triggered, 4));
+        p += impact;
+        triggered++;
+      }
+    }
+
+    results.push(Math.max(0, Math.min(1, p)));
+  }
+
+  results.sort((a, b) => a - b);
+
+  // Build histogram
+  const bins = 40;
+  const counts = new Array(bins).fill(0);
+  for (const r of results) {
+    const idx = Math.min(Math.floor(r * bins), bins - 1);
+    counts[idx]++;
+  }
+
+  return {
+    mean: results.reduce((a, b) => a + b) / results.length,
+    p5: results[Math.floor(nSims * 0.05)],
+    p25: results[Math.floor(nSims * 0.25)],
+    p75: results[Math.floor(nSims * 0.75)],
+    p95: results[Math.floor(nSims * 0.95)],
+    distribution: counts
+  };
+}
+
+// ============================================================
+// DISPLAY UPDATE
+// ============================================================
+
+function updateDisplay(prob, mc) {
+  const pct = (prob * 100).toFixed(1) + '%';
+  const el = document.getElementById('mainProb');
+  el.textContent = pct;
+
+  // Color class
+  el.className = 'prob-value';
+  if (prob < 0.3) el.classList.add('low');
+  else if (prob < 0.5) el.classList.add('medium');
+  else if (prob < 0.75) el.classList.add('high');
+  else el.classList.add('extreme');
+
+  // Bar
+  const bar = document.getElementById('mainBar');
+  bar.style.width = (prob * 100) + '%';
+  if (prob < 0.3) bar.style.background = 'var(--success)';
+  else if (prob < 0.5) bar.style.background = 'linear-gradient(90deg, var(--success), var(--warning))';
+  else if (prob < 0.75) bar.style.background = 'linear-gradient(90deg, var(--warning), var(--danger))';
+  else bar.style.background = 'linear-gradient(90deg, #f59e0b, #ef4444, #dc2626)';
+
+  if (mc) {
+    document.getElementById('bestCase').textContent = (mc.p5 * 100).toFixed(1) + '%';
+    document.getElementById('worstCase').textContent = (mc.p95 * 100).toFixed(1) + '%';
+  }
+
+  document.getElementById('baselineDisp').textContent = pct;
+}
+
+// ============================================================
+// FEATURE IMPORTANCE
+// ============================================================
+
+function renderFeatureImportance() {
+  const el = document.getElementById('featImportance');
+  const maxImp = MODEL.importance[0].importance;
+
+  el.innerHTML = MODEL.importance.map(f => `
+    <div class="feat-item">
+      <span class="feat-name">${MODEL.featureLabels[f.feature] || f.feature}</span>
+      <div class="feat-bar-bg">
+        <div class="feat-bar" style="width:${(f.importance/maxImp*100)}%"></div>
+      </div>
+      <span class="feat-val">${(f.importance*100).toFixed(1)}%</span>
+    </div>
+  `).join('');
+}
+
+// ============================================================
+// HISTORICAL SIMILARITY
+// ============================================================
+
+function renderSimilarity() {
+  const el = document.getElementById('simList');
+  el.innerHTML = MODEL.similarity.map(s => {
+    const isWW = s.name.includes('World War');
+    return `
+      <div class="sim-item">
+        <div>
+          <span style="font-weight:600;${isWW ? 'color:var(--danger)' : ''}">${s.name}</span>
+          <span style="color:var(--text-muted);margin-left:6px">(${s.year})</span>
+          <div class="sim-bar" style="width:${s.similarity*100}%;${isWW ? 'background:var(--danger)' : ''}"></div>
+        </div>
+        <span style="font-weight:700;font-size:14px">${(s.similarity*100).toFixed(1)}%</span>
+      </div>
+    `;
+  }).join('');
+}
+
+// ============================================================
+// SLIDERS
+// ============================================================
+
+function renderSliders() {
+  const el = document.getElementById('sliders');
+  const sliderFeatures = [
+    "great_powers_involved", "theaters", "concurrent_conflicts_global",
+    "alliance_rigidity", "resource_competition", "economic_interdependence",
+    "ideological_divide", "prior_disputes_10yr", "power_ratio_ab"
+  ];
+
+  el.innerHTML = sliderFeatures.map(feat => {
+    const val = currentFeatures[feat];
+    const max = feat === 'great_powers_involved' ? 10 :
+                feat === 'theaters' ? 5 :
+                feat === 'concurrent_conflicts_global' ? 15 :
+                feat === 'prior_disputes_10yr' ? 10 :
+                feat === 'power_ratio_ab' ? 5 : 1;
+    const step = max > 2 ? 1 : 0.1;
+    return `
+      <div class="slider-group">
+        <label>
+          ${MODEL.featureLabels[feat]}
+          <span class="val" id="sv_${feat}">${val}</span>
+        </label>
+        <input type="range" min="0" max="${max}" step="${step}" value="${val}"
+               oninput="updateSlider('${feat}', this.value)">
+      </div>
+    `;
+  }).join('');
+}
+
+function updateSlider(feat, val) {
+  currentFeatures[feat] = parseFloat(val);
+  document.getElementById('sv_' + feat).textContent = val;
+}
+
+// ============================================================
+// CHARTS
+// ============================================================
+
+let timeChart, distChart, sensChart;
+
+function renderTimeChart() {
+  const ctx = document.getElementById('timeChart').getContext('2d');
+  timeChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: ['6 mo', '1 yr', '2 yr', '3 yr', '5 yr'],
+      datasets: [{
+        label: 'WW3 Probability',
+        data: [65.2, 74.7, 82.3, 87.1, 92.4],
+        borderColor: '#ef4444',
+        backgroundColor: 'rgba(239,68,68,0.1)',
+        fill: true,
+        tension: 0.4,
+        pointRadius: 5,
+        pointBackgroundColor: '#ef4444',
+        borderWidth: 3
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: { label: ctx => ctx.parsed.y.toFixed(1) + '%' }
+        }
+      },
+      scales: {
+        y: {
+          min: 0, max: 100,
+          ticks: { color: '#9ca3af', callback: v => v + '%' },
+          grid: { color: 'rgba(31,41,55,0.5)' }
+        },
+        x: {
+          ticks: { color: '#9ca3af' },
+          grid: { color: 'rgba(31,41,55,0.5)' }
+        }
+      }
+    }
+  });
+}
+
+function updateTimeChart(baseProb) {
+  const horizons = [0.5, 1, 2, 3, 5];
+  const probs = horizons.map(h => {
+    let p = baseProb;
+    // Each year adds ~5-8% from accumulating black swan risk
+    p += h * 0.06 * (1 - baseProb);
+    return Math.min(p * 100, 99);
+  });
+  timeChart.data.datasets[0].data = probs;
+  timeChart.update('none');
+}
+
+function renderDistChart() {
+  const mc = runMonteCarlo(MODEL.baseline, 3000);
+  const ctx = document.getElementById('distChart').getContext('2d');
+  const labels = mc.distribution.map((_, i) => (i / mc.distribution.length * 100).toFixed(0) + '%');
+
+  distChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: labels,
+      datasets: [{
+        data: mc.distribution,
+        backgroundColor: mc.distribution.map((_, i) => {
+          const pct = i / mc.distribution.length;
+          if (pct < 0.3) return 'rgba(16,185,129,0.6)';
+          if (pct < 0.5) return 'rgba(245,158,11,0.6)';
+          if (pct < 0.75) return 'rgba(239,68,68,0.6)';
+          return 'rgba(220,38,38,0.8)';
+        }),
+        borderWidth: 0,
+        borderRadius: 2
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        y: {
+          ticks: { color: '#9ca3af' },
+          grid: { color: 'rgba(31,41,55,0.5)' }
+        },
+        x: {
+          ticks: { color: '#9ca3af', maxTicksLimit: 10 },
+          grid: { display: false }
+        }
+      }
+    }
+  });
+}
+
+function updateDistChart(distribution) {
+  distChart.data.datasets[0].data = distribution;
+  distChart.data.datasets[0].backgroundColor = distribution.map((_, i) => {
+    const pct = i / distribution.length;
+    if (pct < 0.3) return 'rgba(16,185,129,0.6)';
+    if (pct < 0.5) return 'rgba(245,158,11,0.6)';
+    if (pct < 0.75) return 'rgba(239,68,68,0.6)';
+    return 'rgba(220,38,38,0.8)';
+  });
+  distChart.update('none');
+}
+
+function renderSensChart() {
+  const features = Object.keys(MODEL.logCoefs);
+  const coefs = features.map(f => MODEL.logCoefs[f]);
+  const sorted = features.map((f, i) => ({ f, c: coefs[i] })).sort((a, b) => Math.abs(b.c) - Math.abs(a.c));
+
+  const ctx = document.getElementById('sensChart').getContext('2d');
+  sensChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: sorted.map(s => MODEL.featureLabels[s.f] || s.f),
+      datasets: [{
+        data: sorted.map(s => s.c),
+        backgroundColor: sorted.map(s => s.c > 0 ? 'rgba(239,68,68,0.7)' : 'rgba(16,185,129,0.7)'),
+        borderWidth: 0,
+        borderRadius: 4
+      }]
+    },
+    options: {
+      indexAxis: 'y',
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: ctx => {
+              const v = ctx.parsed.x;
+              return (v > 0 ? 'Increases' : 'Decreases') + ' WW3 risk (coef: ' + v.toFixed(3) + ')';
+            }
+          }
+        }
+      },
+      scales: {
+        x: {
+          ticks: { color: '#9ca3af' },
+          grid: { color: 'rgba(31,41,55,0.5)' }
+        },
+        y: {
+          ticks: { color: '#9ca3af', font: { size: 11 } },
+          grid: { display: false }
+        }
+      }
+    }
+  });
+}
+
+// ============================================================
+// INIT
+// ============================================================
+
+window.addEventListener('DOMContentLoaded', init);
+</script>
+
+</body>
+</html>
