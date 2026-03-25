@@ -244,23 +244,76 @@
   .btn-add:hover { background: #2563eb; }
 
   .btn-recalc {
-    width: 100%;
+    flex: 1;
     padding: 14px;
     border-radius: 10px;
     border: 2px solid var(--danger);
     background: rgba(239,68,68,0.1);
     color: var(--danger);
     font-weight: 700;
-    font-size: 16px;
+    font-size: 14px;
     font-family: inherit;
     cursor: pointer;
-    margin-top: 16px;
     transition: all 0.2s;
     letter-spacing: 1px;
     text-transform: uppercase;
   }
 
   .btn-recalc:hover { background: var(--danger); color: white; }
+
+  .btn-reset {
+    flex: 1;
+    padding: 14px;
+    border-radius: 10px;
+    border: 2px solid var(--text-muted);
+    background: rgba(156,163,175,0.1);
+    color: var(--text-muted);
+    font-weight: 700;
+    font-size: 14px;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .btn-reset:hover { background: var(--text-muted); color: var(--bg); }
+
+  .action-buttons {
+    display: flex;
+    gap: 12px;
+    margin-top: 16px;
+  }
+
+  /* Model summary card */
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+  }
+
+  .summary-stat {
+    text-align: center;
+    padding: 16px;
+    border-radius: 10px;
+    background: rgba(59,130,246,0.05);
+    border: 1px solid rgba(59,130,246,0.15);
+  }
+
+  .summary-stat .stat-value {
+    font-size: 32px;
+    font-weight: 900;
+    color: var(--accent);
+    line-height: 1;
+  }
+
+  .summary-stat .stat-label {
+    font-size: 11px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 6px;
+  }
 
   /* Custom events list */
   .custom-event {
@@ -442,6 +495,10 @@
       <div class="model-badge"><span class="name">Logistic Regression</span><br><span class="val" id="lrProb">85.0%</span></div>
       <div class="model-badge"><span class="name">Ensemble</span><br><span class="val" id="ensProb">74.7%</span></div>
     </div>
+    <div class="action-buttons" style="max-width:500px;margin:16px auto 0;">
+      <button class="btn-recalc" onclick="recalculate()">Recalculate</button>
+      <button class="btn-reset" onclick="resetAll()">Reset</button>
+    </div>
   </div>
 
   <!-- SCENARIOS -->
@@ -498,8 +555,6 @@
         </div>
         <button class="btn-add" onclick="addCustomEvent()">+ Add Event</button>
       </div>
-
-      <button class="btn-recalc" onclick="recalculate()">Recalculate Probability</button>
     </div>
 
     <!-- CHARTS COLUMN -->
@@ -550,12 +605,73 @@
     </div>
   </div>
 
+  <!-- MODEL TRAINING SUMMARY -->
+  <div class="card">
+    <h2>Model Training Summary</h2>
+    <div class="summary-grid">
+      <div class="summary-stat">
+        <div class="stat-value">64</div>
+        <div class="stat-label">Wars in Training Set</div>
+      </div>
+      <div class="summary-stat">
+        <div class="stat-value">2,526</div>
+        <div class="stat-label">Years of History</div>
+      </div>
+      <div class="summary-stat">
+        <div class="stat-value">500 BC</div>
+        <div class="stat-label">Earliest War</div>
+      </div>
+      <div class="summary-stat">
+        <div class="stat-value">2026</div>
+        <div class="stat-label">Latest Data</div>
+      </div>
+      <div class="summary-stat">
+        <div class="stat-value">7</div>
+        <div class="stat-label">World Wars in Dataset</div>
+      </div>
+      <div class="summary-stat">
+        <div class="stat-value">57</div>
+        <div class="stat-label">Contained Wars</div>
+      </div>
+      <div class="summary-stat">
+        <div class="stat-value">14</div>
+        <div class="stat-label">Features per War</div>
+      </div>
+      <div class="summary-stat">
+        <div class="stat-value">3</div>
+        <div class="stat-label">ML Models (Ensemble)</div>
+      </div>
+      <div class="summary-stat">
+        <div class="stat-value">15</div>
+        <div class="stat-label">Black Swan Types</div>
+      </div>
+      <div class="summary-stat">
+        <div class="stat-value">10K</div>
+        <div class="stat-label">Monte Carlo Sims</div>
+      </div>
+      <div class="summary-stat">
+        <div class="stat-value">8</div>
+        <div class="stat-label">Historical Eras</div>
+      </div>
+      <div class="summary-stat">
+        <div class="stat-value">$0</div>
+        <div class="stat-label">Total Cost</div>
+      </div>
+    </div>
+    <div style="margin-top:16px; font-size:12px; color:var(--text-muted); line-height:1.6;">
+      <strong style="color:var(--text)">Data Sources:</strong> Correlates of War (COW) Project, Uppsala Conflict Data Program (UCDP), historical records (pre-1816), WebSearch (2024-2026 events)<br>
+      <strong style="color:var(--text)">Models:</strong> Random Forest (500 trees, depth 5) | Gradient Boosting (200 trees, lr 0.05) | Logistic Regression (balanced, C=0.5)<br>
+      <strong style="color:var(--text)">Eras Covered:</strong> Ancient (500 BC - 500 AD) | Medieval | Early Modern | 19th Century | World War | Cold War | Post-Cold War | Current (2022-2026)<br>
+      <strong style="color:var(--text)">World Wars Identified:</strong> Mongol Conquests, Thirty Years War, Seven Years War, Napoleonic Wars, WW1, Sino-Japanese/WW2, WW2<br>
+      <strong style="color:var(--text)">Methodology:</strong> Inspired by Professor Jiang Xueqin's Predictive History framework (game theory + structural historical analysis)
+    </div>
+  </div>
+
 </div>
 
 <div class="footer">
-  Model trained on 64 historical wars (500 BC - 2026 AD) using scikit-learn Random Forest + Gradient Boosting + Logistic Regression ensemble.<br>
-  Monte Carlo simulation with 15 black swan event types. Not financial or military advice. For educational/research purposes only.<br>
-  Methodology inspired by Professor Jiang Xueqin's Predictive History framework (game theory + structural analysis).
+  Not financial or military advice. For educational and research purposes only.<br>
+  Built with scikit-learn, Chart.js, and Claude Code.
 </div>
 
 <script>
@@ -689,6 +805,31 @@ function init() {
   renderDistChart();
   renderSensChart();
   updateDisplay(MODEL.baseline);
+}
+
+function resetAll() {
+  // Clear black swans
+  activeBlackSwans.clear();
+  document.querySelectorAll('.bs-item.active').forEach(el => el.classList.remove('active'));
+
+  // Clear custom events
+  customEvents = [];
+  document.getElementById('customEventsList').innerHTML = '';
+
+  // Reset sliders
+  currentFeatures = { ...MODEL.features };
+  renderSliders();
+
+  // Reset probability
+  currentProb = MODEL.baseline;
+  const mc = runMonteCarlo(MODEL.baseline, 2000);
+  updateDisplay(MODEL.baseline, mc);
+  updateTimeChart(MODEL.baseline);
+  updateDistChart(mc.distribution);
+
+  // Pulse animation
+  document.getElementById('mainProb').classList.add('pulse');
+  setTimeout(() => document.getElementById('mainProb').classList.remove('pulse'), 600);
 }
 
 // ============================================================
