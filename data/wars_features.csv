@@ -1,0 +1,66 @@
+id,name,year_start,era,great_powers_involved,theaters,duration_years,power_ratio_ab,alliance_rigidity,economic_interdependence,prior_disputes_10yr,concurrent_conflicts_global,power_transition,nuclear_era,asymmetric_warfare,resource_competition,ideological_divide,escalation_score,became_world_war,system_polarity
+1,Greco-Persian Wars,-499,ancient,2,1,50,0.4,0.6,0.2,3,2,0,0,1,0.3,0.7,6,0,3
+2,Peloponnesian War,-431,ancient,2,2,27,0.9,0.9,0.5,5,1,1,0,1,0.6,0.8,7,0,2
+3,Wars of Alexander the Great,-334,ancient,2,3,11,0.6,0.4,0.2,2,1,1,0,1,0.5,0.5,8,0,3
+4,Second Punic War,-218,ancient,2,3,17,1.1,0.7,0.4,4,2,1,0,1,0.8,0.4,8,0,2
+5,Roman Civil Wars (Caesar),-49,ancient,1,3,4,0.8,0.3,0.9,5,1,1,0,0,0.7,0.6,5,0,1
+6,Arab-Byzantine Wars,629,medieval,2,2,421,0.7,0.4,0.3,5,3,1,0,1,0.6,0.9,7,0,3
+7,Crusades (1st-4th),1096,medieval,4,2,108,0.6,0.5,0.3,3,4,0,0,1,0.5,1.0,8,0,3
+8,Mongol Conquests,1206,medieval,5,4,88,1.5,0.2,0.2,2,5,1,0,1,0.7,0.3,10,1,3
+9,Hundred Years War,1337,medieval,2,1,116,0.7,0.5,0.4,4,3,0,0,1,0.5,0.2,5,0,3
+10,Thirty Years War,1618,early_modern,5,2,30,0.9,0.8,0.4,5,3,1,0,0,0.6,0.9,9,1,3
+11,War of Spanish Succession,1701,early_modern,5,3,13,0.85,0.8,0.4,4,2,1,0,0,0.6,0.4,8,0,3
+12,Seven Years War,1756,early_modern,5,5,7,0.8,0.9,0.4,5,1,1,0,0,0.8,0.3,9,1,3
+13,American Revolutionary War,1775,early_modern,3,2,8,0.5,0.5,0.6,4,1,1,0,1,0.5,0.7,6,0,3
+14,French Revolutionary + Napoleonic Wars,1792,early_modern,6,4,23,0.9,0.7,0.5,5,2,1,0,0,0.7,0.9,10,1,3
+15,Crimean War,1853,19th_century,4,1,3,1.2,0.6,0.4,3,2,0,0,0,0.4,0.5,6,0,3
+16,American Civil War,1861,19th_century,1,2,4,1.5,0.2,0.9,5,2,0,0,0,0.7,0.9,5,0,3
+17,Austro-Prussian War,1866,19th_century,2,1,0.2,1.1,0.5,0.5,3,2,1,0,0,0.4,0.3,4,0,3
+18,Franco-Prussian War,1870,19th_century,2,1,1,1.2,0.4,0.5,3,1,1,0,0,0.5,0.4,5,0,3
+19,Russo-Japanese War,1904,19th_century,2,1,1.5,0.6,0.4,0.2,3,2,1,0,1,0.6,0.4,5,0,3
+20,World War I,1914,world_war,8,4,4,0.85,1.0,0.7,5,3,1,0,1,0.9,0.5,10,1,3
+21,Russian Civil War,1917,world_war,3,2,5,0.7,0.3,0.3,5,3,1,0,1,0.5,1.0,6,0,3
+22,Spanish Civil War,1936,world_war,3,1,3,0.7,0.6,0.4,5,4,1,0,1,0.4,1.0,6,0,3
+23,Second Sino-Japanese War,1937,world_war,2,2,8,1.3,0.5,0.4,5,5,1,0,1,0.9,0.6,8,1,3
+24,World War II,1939,world_war,8,5,6,0.7,0.9,0.5,5,5,1,0,0,1.0,1.0,10,1,3
+25,Korean War,1950,cold_war,3,1,3,0.8,0.8,0.2,3,3,1,1,0,0.3,1.0,7,0,2
+26,Vietnam War,1955,cold_war,3,2,20,0.3,0.6,0.1,4,4,0,1,1,0.2,1.0,6,0,2
+27,Six-Day War,1967,cold_war,2,1,0.02,0.8,0.7,0.1,5,4,0,1,1,0.5,0.8,5,0,2
+28,Yom Kippur War,1973,cold_war,2,1,0.05,1.2,0.8,0.1,5,3,0,1,1,0.6,0.7,6,0,2
+29,Soviet-Afghan War,1979,cold_war,2,1,10,2.0,0.5,0.1,3,5,0,1,1,0.3,0.9,5,0,2
+30,Iran-Iraq War,1980,cold_war,2,1,8,0.7,0.3,0.2,4,5,1,1,0,0.8,0.8,6,0,2
+31,Falklands War,1982,cold_war,1,1,0.2,0.4,0.3,0.3,2,4,0,1,1,0.3,0.3,3,0,2
+32,Gulf War (Desert Storm),1990,post_cold_war,2,1,0.5,0.3,0.7,0.3,4,4,0,1,1,0.8,0.5,5,0,1
+33,Yugoslav Wars,1991,post_cold_war,2,1,10,0.6,0.4,0.5,3,5,1,1,1,0.3,0.8,5,0,1
+34,War in Afghanistan (US),2001,post_cold_war,2,1,20,5.0,0.6,0.05,2,5,0,1,1,0.2,0.9,4,0,1
+35,Iraq War (2003),2003,post_cold_war,1,1,8,5.0,0.4,0.2,5,5,0,1,1,0.7,0.6,4,0,1
+36,Russo-Georgian War,2008,post_cold_war,1,1,0.03,5.0,0.3,0.2,4,5,1,1,1,0.4,0.6,3,0,1.5
+37,Libyan Civil War (NATO Intervention),2011,post_cold_war,2,1,0.7,3.0,0.4,0.2,2,6,0,1,1,0.5,0.6,3,0,1.5
+38,Syrian Civil War,2011,post_cold_war,4,1,12,1.0,0.5,0.2,4,7,1,1,1,0.4,0.8,6,0,2.5
+39,Russian Annexation of Crimea,2014,post_cold_war,1,1,0.1,5.0,0.4,0.4,3,6,1,1,1,0.4,0.6,4,0,2.5
+40,Saudi-Yemen War (Houthi),2015,post_cold_war,2,1,8,3.0,0.5,0.1,3,7,0,1,1,0.5,0.7,4,0,2.5
+41,Russia-Ukraine War (Full Invasion),2022,current,3,1,4,2.5,0.8,0.4,5,7,1,1,1,0.6,0.8,7,0,3
+42,Israel-Gaza War (Oct 7),2023,current,2,2,3,3.0,0.7,0.1,5,7,0,1,1,0.4,0.9,6,0,3
+43,US-Iran War (2026),2026,current,3,2,0.07,3.0,0.8,0.3,5,8,1,1,1,0.9,0.8,8,,3
+44,Cuban Missile Crisis,1962,cold_war,2,1,0.04,1.2,0.9,0.1,5,4,1,1,0,0.3,1.0,8,0,2
+45,Berlin Crises (1948-1961),1948,cold_war,4,1,13,1.3,0.9,0.2,5,3,1,1,0,0.4,1.0,7,0,2
+46,"Taiwan Strait Crises (1954-58, 1995-96)",1954,cold_war,2,1,2,0.5,0.7,0.2,5,4,1,1,1,0.4,0.9,6,0,2
+47,India-Pakistan Wars,1947,cold_war,2,1,3,1.5,0.5,0.3,5,4,0,1,0,0.5,0.7,5,0,2
+48,Ethiopian-Eritrean War,1998,post_cold_war,0,1,2,2.0,0.2,0.3,3,6,0,1,0,0.4,0.3,3,0,1
+49,Nagorno-Karabakh War (2020),2020,post_cold_war,1,1,0.1,2.5,0.4,0.2,5,6,0,1,1,0.4,0.5,3,0,2.5
+50,Tigray War,2020,post_cold_war,0,1,2,2.0,0.3,0.6,3,6,0,1,1,0.3,0.6,4,0,2.5
+51,War of 1812,1812,early_modern,2,2,3,0.4,0.3,0.5,4,2,1,0,1,0.4,0.4,4,0,3
+52,First Balkan War,1912,19th_century,2,1,0.5,1.3,0.7,0.3,5,3,1,0,0,0.5,0.6,5,0,3
+53,Second Balkan War,1913,19th_century,1,1,0.1,1.5,0.6,0.4,5,3,1,0,0,0.5,0.4,4,0,3
+54,Mexican-American War,1846,19th_century,1,2,2,2.0,0.2,0.2,3,1,1,0,0,0.6,0.3,3,0,3
+55,Boxer Rebellion,1899,19th_century,8,1,2,2.0,0.6,0.3,4,3,1,0,1,0.7,0.7,5,0,3
+56,First Italo-Ethiopian War,1895,19th_century,1,1,1,1.5,0.3,0.1,2,2,0,0,1,0.4,0.3,2,0,3
+57,Second Italo-Ethiopian War,1935,world_war,1,1,2,3.0,0.4,0.1,3,3,1,0,1,0.4,0.5,3,0,3
+58,Chinese Civil War,1927,world_war,2,2,22,0.6,0.4,0.8,5,5,1,0,1,0.6,1.0,7,0,3
+59,Sino-Vietnamese War,1979,cold_war,1,1,0.07,3.0,0.4,0.2,3,5,0,1,1,0.3,0.3,3,0,2
+60,First Chechen War,1994,post_cold_war,1,1,2,5.0,0.2,0.5,3,6,1,1,1,0.4,0.6,3,0,1
+61,Rwandan Civil War / Genocide,1990,post_cold_war,0,1,4,0.5,0.2,0.7,4,5,0,1,1,0.3,0.9,3,0,1
+62,Opium Wars,1839,19th_century,2,1,4,1.5,0.3,0.5,3,2,1,0,1,0.7,0.5,4,0,3
+63,Taiping Rebellion,1850,19th_century,1,1,14,0.7,0.3,0.8,4,2,1,0,1,0.6,0.9,6,0,3
+64,ISIS / Iraq-Syria War,2014,post_cold_war,3,2,5,0.2,0.3,0.1,5,7,0,1,1,0.5,1.0,5,0,2.5
+65,Red Sea / Houthi Shipping Crisis,2024,current,2,1,2,0.1,0.5,0.3,5,8,1,1,1,0.7,0.7,5,0,3

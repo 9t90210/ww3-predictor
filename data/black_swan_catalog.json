@@ -1,0 +1,252 @@
+[
+  {
+    "id": "bs_1",
+    "name": "Assassination of major leader",
+    "category": "political",
+    "historical_frequency_per_decade": 2.0,
+    "examples": [
+      "Archduke Franz Ferdinand 1914",
+      "Soleimani 2020",
+      "Rabin 1995"
+    ],
+    "base_escalation_impact": 0.12,
+    "chain_reaction_multiplier": 1.5,
+    "affected_theaters": [
+      "all"
+    ],
+    "description": "Killing of a head of state, military commander, or key political figure"
+  },
+  {
+    "id": "bs_2",
+    "name": "Accidental military shoot-down",
+    "category": "military",
+    "historical_frequency_per_decade": 3.0,
+    "examples": [
+      "KAL 007 1983",
+      "Iran Air 655 1988",
+      "MH17 2014"
+    ],
+    "base_escalation_impact": 0.15,
+    "chain_reaction_multiplier": 1.4,
+    "affected_theaters": [
+      "middle_east",
+      "europe"
+    ],
+    "description": "Accidental destruction of civilian or military aircraft/vessel"
+  },
+  {
+    "id": "bs_3",
+    "name": "Nuclear false alarm / near-launch",
+    "category": "nuclear",
+    "historical_frequency_per_decade": 1.0,
+    "examples": [
+      "Able Archer 1983",
+      "Petrov incident 1983",
+      "Norwegian rocket 1995"
+    ],
+    "base_escalation_impact": 0.22,
+    "chain_reaction_multiplier": 2.0,
+    "affected_theaters": [
+      "all"
+    ],
+    "description": "False alarm or technical error nearly triggering nuclear launch"
+  },
+  {
+    "id": "bs_4",
+    "name": "Surprise military attack",
+    "category": "military",
+    "historical_frequency_per_decade": 2.0,
+    "examples": [
+      "Pearl Harbor 1941",
+      "Yom Kippur 1973",
+      "Oct 7 2023"
+    ],
+    "base_escalation_impact": 0.18,
+    "chain_reaction_multiplier": 1.8,
+    "affected_theaters": [
+      "all"
+    ],
+    "description": "Unexpected large-scale military attack without warning"
+  },
+  {
+    "id": "bs_5",
+    "name": "Global financial crash",
+    "category": "economic",
+    "historical_frequency_per_decade": 2.0,
+    "examples": [
+      "1929 crash",
+      "2008 Lehman",
+      "1997 Asian crisis"
+    ],
+    "base_escalation_impact": 0.09,
+    "chain_reaction_multiplier": 1.3,
+    "affected_theaters": [
+      "all"
+    ],
+    "description": "Systemic financial collapse affecting multiple major economies"
+  },
+  {
+    "id": "bs_6",
+    "name": "Coup or regime collapse in nuclear state",
+    "category": "political",
+    "historical_frequency_per_decade": 1.5,
+    "examples": [
+      "USSR collapse 1991",
+      "Pakistan instability",
+      "North Korea succession"
+    ],
+    "base_escalation_impact": 0.14,
+    "chain_reaction_multiplier": 1.7,
+    "affected_theaters": [
+      "all"
+    ],
+    "description": "Government overthrow or state collapse in a nuclear-armed nation"
+  },
+  {
+    "id": "bs_7",
+    "name": "Major cyber attack on critical infrastructure",
+    "category": "cyber",
+    "historical_frequency_per_decade": 0.5,
+    "examples": [
+      "Stuxnet 2010",
+      "Colonial Pipeline 2021",
+      "NotPetya 2017"
+    ],
+    "base_escalation_impact": 0.11,
+    "chain_reaction_multiplier": 1.4,
+    "affected_theaters": [
+      "all"
+    ],
+    "description": "Cyber attack disabling power grid, financial systems, or military C2"
+  },
+  {
+    "id": "bs_8",
+    "name": "AI system malfunction in military context",
+    "category": "technology",
+    "historical_frequency_per_decade": 0.1,
+    "examples": [
+      "No historical precedent at scale"
+    ],
+    "base_escalation_impact": 0.15,
+    "chain_reaction_multiplier": 2.0,
+    "affected_theaters": [
+      "all"
+    ],
+    "description": "Autonomous weapons or early warning AI making catastrophic error"
+  },
+  {
+    "id": "bs_9",
+    "name": "Pandemic disrupting military operations",
+    "category": "health",
+    "historical_frequency_per_decade": 0.3,
+    "examples": [
+      "1918 Spanish Flu",
+      "COVID-19 2020"
+    ],
+    "base_escalation_impact": -0.05,
+    "chain_reaction_multiplier": 0.8,
+    "affected_theaters": [
+      "all"
+    ],
+    "description": "Global pandemic forcing military drawdowns (can reduce conflict)"
+  },
+  {
+    "id": "bs_10",
+    "name": "Rogue nuclear weapon detonation",
+    "category": "nuclear",
+    "historical_frequency_per_decade": 0.05,
+    "examples": [
+      "Never occurred"
+    ],
+    "base_escalation_impact": 0.3,
+    "chain_reaction_multiplier": 3.0,
+    "affected_theaters": [
+      "all"
+    ],
+    "description": "Unauthorized, terrorist, or accidental nuclear detonation"
+  },
+  {
+    "id": "bs_11",
+    "name": "Naval collision / incident in contested waters",
+    "category": "military",
+    "historical_frequency_per_decade": 3.0,
+    "examples": [
+      "Gulf of Tonkin 1964",
+      "USS Liberty 1967",
+      "EP-3 2001",
+      "South China Sea incidents"
+    ],
+    "base_escalation_impact": 0.1,
+    "chain_reaction_multiplier": 1.3,
+    "affected_theaters": [
+      "middle_east",
+      "indo_pacific"
+    ],
+    "description": "Military vessels/aircraft from rival powers colliding or exchanging fire"
+  },
+  {
+    "id": "bs_12",
+    "name": "Arms control treaty collapse",
+    "category": "diplomatic",
+    "historical_frequency_per_decade": 2.0,
+    "examples": [
+      "INF withdrawal 2019",
+      "ABM withdrawal 2002",
+      "New START expiry"
+    ],
+    "base_escalation_impact": 0.07,
+    "chain_reaction_multiplier": 1.2,
+    "affected_theaters": [
+      "all"
+    ],
+    "description": "Major arms control agreement expires or is withdrawn from"
+  },
+  {
+    "id": "bs_13",
+    "name": "China-Taiwan military incident",
+    "category": "military",
+    "historical_frequency_per_decade": 1.0,
+    "examples": [
+      "1996 crisis",
+      "2026 airspace violation"
+    ],
+    "base_escalation_impact": 0.18,
+    "chain_reaction_multiplier": 1.8,
+    "affected_theaters": [
+      "indo_pacific"
+    ],
+    "description": "Direct military confrontation between PLA and Taiwan/US forces"
+  },
+  {
+    "id": "bs_14",
+    "name": "NATO-Russia direct military clash",
+    "category": "military",
+    "historical_frequency_per_decade": 0.3,
+    "examples": [
+      "Near-misses in Baltic",
+      "Turkey shoot-down of Russian jet 2015"
+    ],
+    "base_escalation_impact": 0.2,
+    "chain_reaction_multiplier": 1.9,
+    "affected_theaters": [
+      "europe"
+    ],
+    "description": "Direct exchange of fire between NATO and Russian forces"
+  },
+  {
+    "id": "bs_15",
+    "name": "Strait of Hormuz full closure",
+    "category": "economic",
+    "historical_frequency_per_decade": 0.2,
+    "examples": [
+      "2026 partial closure (current)"
+    ],
+    "base_escalation_impact": 0.13,
+    "chain_reaction_multiplier": 1.5,
+    "affected_theaters": [
+      "middle_east",
+      "all"
+    ],
+    "description": "Complete blockade of Strait of Hormuz cutting 20% of global oil"
+  }
+]

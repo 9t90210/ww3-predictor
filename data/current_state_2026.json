@@ -1,0 +1,24 @@
+{
+  "date": "2026-03-25",
+  "active_conflicts": 8,
+  "great_power_tensions": {
+    "us_china": 0.8,
+    "us_russia": 0.9,
+    "us_iran": 1.0,
+    "china_taiwan": 0.7,
+    "russia_nato": 0.8
+  },
+  "system_polarity": "multipolar",
+  "economic_stress": 0.8,
+  "alliance_rigidity": 0.8,
+  "power_transition_underway": true,
+  "nuclear_states_in_conflict": 3,
+  "concurrent_theaters": 3,
+  "oil_price_shock": true,
+  "hormuz_status": "near_closed",
+  "global_arms_spending_trend": "increasing",
+  "international_institutions_effectiveness": 0.3,
+  "active_black_swans": [
+    "bs_15"
+  ]
+}
