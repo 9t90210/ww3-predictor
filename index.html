@@ -244,7 +244,6 @@
   .btn-add:hover { background: #2563eb; }
 
   .btn-recalc {
-    flex: 1;
     padding: 14px;
     border-radius: 10px;
     border: 2px solid var(--danger);
@@ -262,7 +261,6 @@
   .btn-recalc:hover { background: var(--danger); color: white; }
 
   .btn-reset {
-    flex: 1;
     padding: 14px;
     border-radius: 10px;
     border: 2px solid var(--text-muted);
@@ -489,15 +487,13 @@
       <span>Baseline: <strong id="baselineDisp">74.7%</strong></span>
       <span>Worst Case: <strong id="worstCase">94.5%</strong></span>
     </div>
-    <div class="model-badges">
+    <div class="model-badges" style="justify-content:center;">
       <div class="model-badge"><span class="name">Random Forest</span><br><span class="val" id="rfProb">28.6%</span></div>
       <div class="model-badge"><span class="name">Gradient Boosting</span><br><span class="val" id="gbProb">99.8%</span></div>
       <div class="model-badge"><span class="name">Logistic Regression</span><br><span class="val" id="lrProb">85.0%</span></div>
       <div class="model-badge"><span class="name">Ensemble</span><br><span class="val" id="ensProb">74.7%</span></div>
-    </div>
-    <div class="action-buttons" style="max-width:500px;margin:16px auto 0;">
-      <button class="btn-recalc" onclick="recalculate()">Recalculate</button>
-      <button class="btn-reset" onclick="resetAll()">Reset</button>
+      <button class="btn-recalc" style="margin:0;padding:10px 24px;" onclick="recalculate()">Recalculate</button>
+      <button class="btn-reset" style="margin:0;padding:10px 24px;" onclick="resetAll()">Reset</button>
     </div>
   </div>
 
